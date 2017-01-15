@@ -1,0 +1,8 @@
+# Docker Volume Folder
+volume_data
+
+# Git Ignore File
+.gitignore
+
+# Git Folder
+.git

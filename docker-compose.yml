@@ -1,0 +1,47 @@
+version: '2'
+services:
+  gitlab:
+    build: .
+    image: danieleagle/gitlab-ce:8.15.4-ce.1
+    container_name: GitLab
+    restart: always
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://example.com:9150'
+        gitlab_rails['time_zone'] = 'America/Chicago'
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "smtp.example.com"
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = "no-reply@example.com"
+        gitlab_rails['smtp_password'] = "changeMe"
+        gitlab_rails['smtp_domain'] = "example.com"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['gitlab_email_from'] = 'gitlab-no-reply@example.com'
+        gitlab_rails['backup_keep_time'] = 14515200
+        logging['logrotate_frequency'] = "weekly"
+        logging['logrotate_rotate'] = 52
+        logging['logrotate_compress'] = "compress"
+        logging['logrotate_method'] = "copytruncate"
+        logging['logrotate_delaycompress'] = "delaycompress"
+        nginx['listen_port'] = 443
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = "/etc/gitlab/ssl/server.crt"
+        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/server.key"
+        nginx['logrotate_frequency'] = "weekly"
+        nginx['logrotate_rotate'] = 52
+        nginx['logrotate_compress'] = "compress"
+        nginx['logrotate_method'] = "copytruncate"
+        nginx['logrotate_delaycompress'] = "delaycompress"
+        # Add any other gitlab.rb configuration options
+    ports:
+      - '9150:443'
+      - '9151:22'
+    volumes:
+      - './volume_data/conf:/etc/gitlab'
+      - './volume_data/logs:/var/log/gitlab'
+      - './volume_data/main:/var/opt/gitlab'
+networks:
+  default:
+    external:
+      name: development
