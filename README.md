@@ -2,19 +2,19 @@
 
 This repository contains custom Docker files for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ce). Everything is setup to run on HTTPS using a self-signed certificate ([this needs to be created](./README.md#generating-self-signed-certificate)) and includes commonly used features specified as environment variables in the included Docker Compose file.
 
-Be sure to see the [change log](./CHANGELOG.md) if interested in tracking changes leading to the current release.
+Be sure to see the [change log](./CHANGELOG.md) if interested in tracking changes leading to the current release. In addition, please refer to [this article](http://danieleagle.com/2017/01/gitlab-ce-with-https-using-docker/) for even more details about this project.
 
 ## Getting Started
 
 1. Ensure [Docker Compose](https://docs.docker.com/compose/) is installed along with [Docker Engine](https://docs.docker.com/engine/installation/).
 
-2. Clone this repository into a the desired location.
+2. Clone this repository into the desired location.
 
 3. Modify the GitLab CE settings to meet the needs of the particular context. These settings are found in the [docker-compose.yml](./docker-compose.yml) file. Information on these settings are found below.
 
 4. [Generate a self-signed certificate](./README.md#generating-a-self-signed-certificate) to use with the GitLab CE instance.
 
-5. Run the following command (geared toward Linux): 
+5. Run the following command (geared toward Linux):
 
    `sudo docker-compose up -d`
 
@@ -93,7 +93,7 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
 
    It's important that for *Common Name (e.g. server FQDN or YOUR name)* to enter the URL that GitLab CE will use (e.g. the value specified for external URL in *docker-compose.yml* without the port).
 
-4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server.key  -out server.crt` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
+4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
 
 5. Copy both server.crt and server.key into `./config/ssl` (part of this repository) and overwrite the dummy files. These files will be copied into the container and used to secure the GitLab CE instance.
 
