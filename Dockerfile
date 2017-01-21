@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-ce:8.15.4-ce.1
+FROM gitlab/gitlab-ce:8.16.0-rc6.ce.0
 MAINTAINER Daniel Eagle
 
 VOLUME /etc/gitlab/ssl

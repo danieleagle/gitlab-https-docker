@@ -2,7 +2,7 @@ version: '2'
 services:
   gitlab:
     build: .
-    image: danieleagle/gitlab-ce:8.15.4-ce.1
+    image: danieleagle/gitlab-ce:8.16.0-rc6.ce.0
     container_name: GitLab
     restart: always
     environment:
