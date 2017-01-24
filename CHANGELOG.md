@@ -1,3 +1,8 @@
+# v1.2.0
+
+- Updated relevant documentation.
+- Updated GitLab CE to version 8.16.1-ce.0.
+
 # v1.1.0
 
 - Updated relevant documentation.
