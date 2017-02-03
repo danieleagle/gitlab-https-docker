@@ -1,4 +1,4 @@
-# GitLab CE HTTPS Docker Container
+# GitLab CE with HTTPS on Docker
 
 This repository contains custom Docker files for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ce). Everything is setup to run on HTTPS using a self-signed certificate ([this needs to be created](./README.md#generating-self-signed-certificate)) and includes commonly used features specified as environment variables in the included Docker Compose file.
 
