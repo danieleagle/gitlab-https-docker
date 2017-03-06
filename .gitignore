@@ -62,7 +62,4 @@ Temporary Items
 .apdisk
 
 # Docker Volume Folder
-volume_data
-
-# SSL Folder
-config\ssl
+/volume_data
