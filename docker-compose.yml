@@ -1,8 +1,7 @@
 version: '2'
 services:
   gitlab:
-    build: .
-    image: danieleagle/gitlab-ce:8.16.4-ce.0
+    image: gitlab/gitlab-ce:8.17.2-ce.0
     container_name: GitLab
     restart: always
     environment:
@@ -26,8 +25,8 @@ services:
         logging['logrotate_delaycompress'] = "delaycompress"
         nginx['listen_port'] = 443
         nginx['redirect_http_to_https'] = true
-        nginx['ssl_certificate'] = "/etc/gitlab/ssl/server.crt"
-        nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/server.key"
+        nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/server.crt"
+        nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/server.key"
         nginx['logrotate_frequency'] = "weekly"
         nginx['logrotate_rotate'] = 52
         nginx['logrotate_compress'] = "compress"
@@ -39,6 +38,7 @@ services:
       - '9151:22'
     volumes:
       - './volume_data/conf:/etc/gitlab'
+      - './volume_data/ssl:/etc/ssl/certs/gitlab'
       - './volume_data/logs:/var/log/gitlab'
       - './volume_data/main:/var/opt/gitlab'
 networks:
