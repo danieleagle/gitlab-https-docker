@@ -95,9 +95,11 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
 
 4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
 
-5. Copy both server.crt and server.key into `./config/ssl` (part of this repository) and overwrite the dummy files. These files will be copied into the container and used to secure the GitLab CE instance.
+5. Delete the leftover certificate signing request file: `sudo rm server.csr`.
 
-6. Delete the leftover certificate signing request file: `sudo rm server.csr`.
+6. Create a folder named `./volume_data/ssl` by typing (geared toward Linux) the following command: `sudo mkdir -p /volume_data/ssl`. Be sure to run this command in the root of the folder where you cloned this repository.
+
+7. Copy both **server.crt** and **server.key** into `./volume_data/ssl`. These files will be used to enable HTTPS.
 
 ## Container Network
 

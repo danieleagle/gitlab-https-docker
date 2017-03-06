@@ -1,3 +1,13 @@
+# v1.4.0
+
+- Updated relevant documentation.
+- Removed copying of SSL files into image (see [this article](https://developer.atlassian.com/blog/2016/06/common-dockerfile-mistakes/)). Please review updated README.md.
+- Removed Dockerfile as it's no longer needed after making the changes from the previous bullet point.
+- Removed dummy SSL files.
+- Changed volume mapping for SSL files.
+- Updated GitLab CE to version 8.17.2-ce.0.
+- Updated .gitignore to remove old config folder.
+
 # v1.3.0
 
 - Updated relevant documentation.
