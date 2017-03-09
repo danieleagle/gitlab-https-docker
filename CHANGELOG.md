@@ -1,3 +1,9 @@
+# v1.4.1
+
+- Added .gitattributes to enforce LF line endings.
+- Updated GitLab CE to version 8.17.3-ce.0.
+- Updated docker-compose.yml to version 3.
+
 # v1.4.0
 
 - Updated relevant documentation.
