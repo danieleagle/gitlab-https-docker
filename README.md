@@ -91,7 +91,7 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
     An optional company name []:
     ```
 
-   It's important that for *Common Name (e.g. server FQDN or YOUR name)* to enter the URL that GitLab CE will use (e.g. the value specified for external URL in *docker-compose.yml* without the port).
+   It's important that for *Common Name (e.g. server FQDN or YOUR name)* to enter the domain that GitLab CE will use (e.g. the value specified for external URL in *docker-compose.yml* without the port such as **gitlab.internal.example.com**).
 
 4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
 

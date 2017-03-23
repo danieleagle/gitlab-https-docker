@@ -1,3 +1,8 @@
+# v1.4.2
+
+- Updated GitLab CE to version 9.0.0-ce.0.
+- Minor documentation changes.
+
 # v1.4.1
 
 - Added .gitattributes to enforce LF line endings.
