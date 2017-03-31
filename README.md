@@ -109,7 +109,7 @@ If no network has been created, run the following Docker command (geared toward 
 
 ## Port Mapping
 
-The external ports used to map to the internal ports that GitLab CE uses are 9150 (maps to 443 for HTTPS) and 9151 (maps to 22 for SSH). These ports can certainly be changed but please be mindful of the effects. Changing the port mapped to HTTPS will require changing it on the *external_url* setting found in the Docker Compose file.
+The external ports used to map to the internal ports that GitLab CE uses are 51203 (maps to 443 for HTTPS) and 51204 (maps to 22 for SSH). These ports can certainly be changed but please be mindful of the effects. Changing the port mapped to HTTPS will require changing it on the *external_url* setting found in the Docker Compose file.
 
 However, if the external port for HTTPS is set to the same port used internally (e.g. 443), then the port can be omitted from the *external_url* setting and the *nginx['listen_port']* setting can be omitted as it will no longer be required.
 

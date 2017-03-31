@@ -1,3 +1,9 @@
+# v1.5.0
+
+- Changed port mapping from 9150 to 51203 (HTTPS) and 9151 to 51204 (SSH).
+- Updated GitLab CE to version 9.0.2-ce.0.
+- Added .dockerignore rule to ignore .md files.
+
 # v1.4.2
 
 - Updated GitLab CE to version 9.0.0-ce.0.
