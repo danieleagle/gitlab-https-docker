@@ -6,3 +6,6 @@ volume_data
 
 # Git Folder
 .git
+
+# MD Files
+*.md
