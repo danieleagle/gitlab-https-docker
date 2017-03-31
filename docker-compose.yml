@@ -1,12 +1,12 @@
 version: '3'
 services:
   gitlab:
-    image: gitlab/gitlab-ce:9.0.0-ce.0
+    image: gitlab/gitlab-ce:9.0.2-ce.0
     container_name: GitLab
     restart: always
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.internal.example.com:9150'
+        external_url 'https://gitlab.internal.example.com:51203'
         gitlab_rails['time_zone'] = 'America/Chicago'
         gitlab_rails['smtp_enable'] = true
         gitlab_rails['smtp_address'] = "smtp.example.com"
@@ -34,8 +34,8 @@ services:
         nginx['logrotate_delaycompress'] = "delaycompress"
         # Add any other gitlab.rb configuration options
     ports:
-      - '9150:443'
-      - '9151:22'
+      - '51203:443'
+      - '51204:22'
     volumes:
       - './volume_data/conf:/etc/gitlab'
       - './volume_data/ssl:/etc/ssl/certs/gitlab'
