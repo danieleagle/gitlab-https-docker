@@ -1,8 +1,14 @@
-# GitLab CE with HTTPS on Docker
+# GitLab with HTTPS on Docker
 
 This repository contains custom Docker files for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ce). Everything is setup to run on HTTPS using a self-signed certificate ([this needs to be created](./README.md#generating-self-signed-certificate)) and includes commonly used features specified as environment variables in the included Docker Compose file.
 
 Be sure to see the [change log](./CHANGELOG.md) if interested in tracking changes leading to the current release. In addition, please refer to [this article](http://danieleagle.com/2017/01/gitlab-ce-with-https-using-docker/) for even more details about this project.
+
+Also, if you wish to setup a highly available complete CICD solution running in Azure using this solution, see [this article](https://danieleagle.com/2017/10/setting-up-a-private-cicd-solution-in-azure/). It contains a plethora of information that will greatly complement the text within. The Azure specific GitLab files can be found in the [azure](./azure/) folder within this repository.
+
+## Assumed Environment
+
+It is assumed that the environment being used is Linux for installation purposes. The instructions within have been tested successfully on [Ubuntu](https://www.ubuntu.com/) 16.10 and 17.04. Additional instructions will be applicable to Windows.
 
 ## Getting Started
 
@@ -10,11 +16,11 @@ Be sure to see the [change log](./CHANGELOG.md) if interested in tracking change
 
 2. Clone this repository into the desired location.
 
-3. Modify the GitLab CE settings to meet the needs of the particular context. These settings are found in the [docker-compose.yml](./docker-compose.yml) file. Information on these settings are found below.
+3. Modify the GitLab CE settings to meet the needs of the particular context. These settings are found in the [docker-compose.yml](./docker-compose.yml) file. Information on these settings are found below. Also, change the **network alias** to the FQDN of your choice if you wish to use that later with any other Docker containers.
 
 4. [Generate a self-signed certificate](./README.md#generating-a-self-signed-certificate) to use with the GitLab CE instance.
 
-5. Run the following command (geared toward Linux):
+5. Run the following command:
 
    `sudo docker-compose up -d`
 
@@ -22,7 +28,7 @@ Please read the rest of the content found within in order to understand addition
 
 ## Settings Specified in Docker Compose File
 
-Below is a list of the settings that are specified in [docker-compose.yml](./docker-compose.yml). Some of these settings will need to be changed in order to meet specific goals. Additional settings can be added here or existing settings removed. For more information on available configuration options, go [here](https://docs.gitlab.com/omnibus/settings/configuration.html). In addition, for more information on the logrotate settings, go [here](http://www.linuxcommand.org/man_pages/logrotate8.html).
+Below is a list of the settings (more settings may exist in the docker-compose.yml file) that are specified in [docker-compose.yml](./docker-compose.yml). Some of these settings will need to be changed in order to meet specific goals. Additional settings can be added here or existing settings removed. For more information on available configuration options, go [here](https://docs.gitlab.com/omnibus/settings/configuration.html). In addition, for more information on the logrotate settings, go [here](http://www.linuxcommand.org/man_pages/logrotate8.html).
 
 1. **external_url** - This is the URL used to access the GitLab CE instance externally. Links in emails will use this URL along with certain uploaded assets (e.g. images specified for groups, etc.). Be sure to specify the port used externally to access the GitLab CE instance from Docker (e.g. port 9150 which maps to the internal Docker port of 443).
 
@@ -68,11 +74,11 @@ Below is a list of the settings that are specified in [docker-compose.yml](./doc
 
 ## Generating a Self-Signed Certificate
 
-In order to generate a self-signed certificate (using OpenSSL) to secure all HTTP traffic, follow these instructions (geared toward Linux).
+In order to generate a self-signed certificate (using OpenSSL) to secure all HTTP traffic, follow these instructions.
 
-1. Run the command `sudo openssl genrsa -out server.key 4096` which will generate a secure server key.
+1. Run the command `sudo openssl genrsa -out server-key.pem 4096` which will generate a secure server key.
 
-2. Run the command `sudo openssl req -new -key server.key -out server.csr` which will generate the certificate signing request.
+2. Run the command `sudo openssl req -new -key server-key.pem -out server.csr` which will generate the certificate signing request.
 
 3. The above command will request input in the following areas shown below.
 
@@ -91,13 +97,13 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
     An optional company name []:
     ```
 
-   It's important that for *Common Name (e.g. server FQDN or YOUR name)* to enter the domain that GitLab CE will use (e.g. the value specified for external URL in *docker-compose.yml* without the port such as **gitlab.internal.example.com**).
+   It's important that for *Common Name (e.g. server FQDN or YOUR name)* to enter the domain that GitLab CE will use (e.g. the value specified for external URL in *docker-compose.yml* without the port such as **gitlab.dev.internal.example.com**).
 
-4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
+4. Run the command `sudo openssl x509 -req -days 365 -in server.csr -signkey server-key.pem -out server-cert.pem` to create the signed certificate. The certificate will be valid for one year unless the value used for days is different.
 
 5. Delete the leftover certificate signing request file: `sudo rm server.csr`.
 
-6. Create a folder named `./volume_data/ssl` by typing (geared toward Linux) the following command: `sudo mkdir -p /volume_data/ssl`. Be sure to run this command in the root of the folder where you cloned this repository.
+6. Create a folder named `./volume_data/ssl` by typing the following command: `sudo mkdir -p /volume_data/ssl`. Be sure to run this command in the root of the folder where you cloned this repository.
 
 7. Copy both **server.crt** and **server.key** into `./volume_data/ssl`. These files will be used to enable HTTPS.
 
@@ -105,11 +111,11 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
 
 The network specified (can be changed to the desired value) by this Docker container is named `development`. It is assumed that this network has already been created prior to using the included Docker Compose file. The reason for this is to avoid generating a default network so that other Docker containers can access the GitLab CE instance (e.g. Jenkins for CICD, etc.) using the [Docker embedded DNS server](https://docs.docker.com/engine/userguide/networking/#/docker-embedded-dns-server).
 
-If no network has been created, run the following Docker command (geared toward Linux): `sudo docker network create network-name`. Be sure to replace *network-name* with the name of the desired network. For more information on this command, go [here](https://docs.docker.com/engine/reference/commandline/network_create/).
+If no network has been created, run the following Docker command: `sudo docker network create network-name`. Be sure to replace *network-name* with the name of the desired network. For more information on this command, go [here](https://docs.docker.com/engine/reference/commandline/network_create/).
 
 ## Port Mapping
 
-The external ports used to map to the internal ports that GitLab CE uses are 51203 (maps to 443 for HTTPS) and 51204 (maps to 22 for SSH). These ports can certainly be changed but please be mindful of the effects. Changing the port mapped to HTTPS will require changing it on the *external_url* setting found in the Docker Compose file.
+The external ports used to map to the internal ports that GitLab CE uses are 50443 (maps to 443 for HTTPS) and 50022 (maps to 22 for SSH). These ports can certainly be changed but please be mindful of the effects. Changing the port mapped to HTTPS will require changing it on the *external_url* setting found in the Docker Compose file.
 
 However, if the external port for HTTPS is set to the same port used internally (e.g. 443), then the port can be omitted from the *external_url* setting and the *nginx['listen_port']* setting can be omitted as it will no longer be required.
 
@@ -127,7 +133,7 @@ To configure Git to always use the self-signed certificate for all HTTPS transac
 
 ``` bash
 [http]
-  sslCAinfo = C:\\Users\\jsmith\\certificates\\gitlab\\server.crt
+  sslCAinfo = C:\\Users\\jsmith\\certificates\\gitlab\\server-cert.pem
 ```
 
 This assumes the certificate has been copied into a different directory (e.g. c:\Users\jsmith\certificates) and then referenced in the global Git configuration file. This directory can be changed to something else if desired.
@@ -138,7 +144,7 @@ This option, while being more manual in nature, specifies the self-signed certif
 
 Run the following command to clone a repository and specify the self-signed certificate to use for it (geared toward Windows):
 
-`git clone -c http.sslCAPath="C:\\Users\\jsmith\\certificates\\gitlab" -c http.sslCAInfo="C:\\Users\\jsmith\\certificates\\gitlab\\server.crt" -c http.sslVerify=1 https://git.example.com/jsmith/gitlab-ce.git`
+`git clone -c http.sslCAPath="C:\\Users\\jsmith\\certificates\\gitlab" -c http.sslCAInfo="C:\\Users\\jsmith\\certificates\\gitlab\\server-cert.pem" -c http.sslVerify=1 https://git.example.com/jsmith/gitlab-ce.git`
 
 Please see **Option 1** above for more details on the path used with this command. This path will be different depending upon the context.
 

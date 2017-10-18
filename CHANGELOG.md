@@ -1,3 +1,10 @@
+# v1.6.0
+
+- Updated GitLab CE to the latest version.
+- Changed port mapping, environment variables, and added network alias to docker-compose.yml.
+- Updated the docs to include updated instructions.
+- Added Azure files to complement [this article](https://danieleagle.com/2017/10/setting-up-a-private-cicd-solution-in-azure/).
+
 # v1.5.0
 
 - Changed port mapping from 9150 to 51203 (HTTPS) and 9151 to 51204 (SSH).
