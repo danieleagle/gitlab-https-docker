@@ -1,0 +1,57 @@
+version: '3'
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:10.0.4-ee.0
+    container_name: GitLab
+    restart: always
+    ports:
+      - '50443:443'
+      - '50022:22'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab-spacely-engineering.example.com:50443'
+        gitlab_rails['time_zone'] = 'America/Chicago'
+        gitlab_rails['gitlab_email_from'] = 'admin@example.com'
+        gitlab_rails['gitlab_email_display_name'] = 'GitLab Administrator'
+        gitlab_rails['gitlab_email_reply_to'] = 'admin@example.com'
+        gitlab_rails['backup_keep_time'] = 14515200
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "smtp.example.com"
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = "admin@example.com"
+        gitlab_rails['smtp_password'] = "changeMeToSomethingGood"
+        gitlab_rails['smtp_domain'] = "example.com"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        unicorn['worker_timeout'] = 60
+        unicorn['worker_processes'] = 3
+        logging['logrotate_frequency'] = "weekly"
+        logging['logrotate_rotate'] = 52
+        logging['logrotate_compress'] = "compress"
+        logging['logrotate_method'] = "copytruncate"
+        logging['logrotate_delaycompress'] = "delaycompress"
+        nginx['listen_port'] = 443
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = "/etc/ssl/certs/gitlab/server-cert.pem"
+        nginx['ssl_certificate_key'] = "/etc/ssl/certs/gitlab/server-key.pem"
+        nginx['ssl_protocols'] = "TLSv1.1 TLSv1.2"
+        nginx['logrotate_frequency'] = "weekly"
+        nginx['logrotate_rotate'] = 52
+        nginx['logrotate_compress'] = "compress"
+        nginx['logrotate_method'] = "copytruncate"
+        nginx['logrotate_delaycompress'] = "delaycompress"
+        manage_storage_directories['enable'] = false
+        # Add any other gitlab.rb configuration options if desired
+    volumes:
+      - /nfs/docker-data/container-data/cicd/gitlab/data:/var/opt/gitlab
+      - /nfs/docker-data/container-data/cicd/gitlab/config:/etc/gitlab
+      - /nfs/docker-data/container-data/cicd/gitlab/certs:/etc/ssl/certs/gitlab:ro
+      - /nfs/docker-data/container-data/cicd/gitlab/logs:/var/log/gitlab
+    networks:
+      cicd-net:
+        aliases:
+          - gitlab.example.com
+networks:
+  cicd-net:
+    external:
+      name: spacely-eng-disparate

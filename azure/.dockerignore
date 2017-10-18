@@ -1,0 +1,8 @@
+# Git Ignore File
+.gitignore
+
+# Git Folder
+.git
+
+# MD Files
+*.md
