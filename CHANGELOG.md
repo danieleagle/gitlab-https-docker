@@ -1,3 +1,7 @@
+# v1.6.1
+
+- Updated GitLab image references to latest version.
+
 # v1.6.0
 
 - Updated GitLab CE to the latest version.
