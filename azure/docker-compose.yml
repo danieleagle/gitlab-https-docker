@@ -1,7 +1,7 @@
 version: '3'
 services:
   gitlab:
-    image: gitlab/gitlab-ee:10.0.4-ee.0
+    image: gitlab/gitlab-ee:10.3.4-ee.0
     container_name: GitLab
     restart: always
     ports:
