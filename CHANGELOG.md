@@ -1,3 +1,7 @@
+# v1.6.2
+
+- Add info about Let's encrypt SSL.
+
 # v1.6.1
 
 - Updated GitLab image references to latest version.
