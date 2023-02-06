@@ -1,6 +1,6 @@
 # GitLab with HTTPS on Docker
 
-This repository contains custom Docker files for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ce). Everything is setup to run on HTTPS using a self-signed certificate ([this needs to be created](./README.md#generating-self-signed-certificate)) and includes commonly used features specified as environment variables in the included Docker Compose file.
+This repository contains custom Docker files for [GitLab CE](https://gitlab.com/gitlab-org/gitlab-ce). Everything is setup to run on HTTPS using a self-signed certificate([this needs to be created](./README.md#generating-self-signed-certificate)) or a free Let's Encrypt certificate and includes commonly used features specified as environment variables in the included Docker Compose file.
 
 Be sure to see the [change log](./CHANGELOG.md) if interested in tracking changes leading to the current release. In addition, please refer to [this article](http://danieleagle.com/2017/01/gitlab-ce-with-https-using-docker/) for even more details about this project.
 
@@ -18,7 +18,7 @@ It is assumed that the environment being used is Linux for installation purposes
 
 3. Modify the GitLab CE settings to meet the needs of the particular context. These settings are found in the [docker-compose.yml](./docker-compose.yml) file. Information on these settings are found below. Also, change the **network alias** to the FQDN of your choice if you wish to use that later with any other Docker containers.
 
-4. [Generate a self-signed certificate](./README.md#generating-a-self-signed-certificate) to use with the GitLab CE instance.
+4. [Generate a self-signed certificate](./README.md#generating-a-self-signed-certificate) [ or integrate Let’s Encrypt SSL](./README.md#integrating-a-free-certificate-from-let's-encrypt) to use with the GitLab CE instance.
 
 5. Run the following command:
 
@@ -106,6 +106,21 @@ In order to generate a self-signed certificate (using OpenSSL) to secure all HTT
 6. Create a folder named `./volume_data/ssl` by typing the following command: `sudo mkdir -p /volume_data/ssl`. Be sure to run this command in the root of the folder where you cloned this repository.
 
 7. Copy both **server.crt** and **server.key** into `./volume_data/ssl`. These files will be used to enable HTTPS.
+
+## Integrating a free certificate from Let's Encrypt
+
+Instead of generating a self-signed SSL integrate you can use a free certificate from Let's Encrypt. It's much easier as it requires only to add the next config parameters:
+
+```yaml
+letsencrypt['enable'] = true
+letsencrypt['auto_renew'] = true
+letsencrypt['contact_emails'] = ['your-email@put.your.host.here.com']
+letsencrypt['auto_renew_hour'] = "12"
+letsencrypt['auto_renew_minute'] = "30"
+letsencrypt['auto_renew_day_of_month'] = "*/7"
+```
+
+After adding them you can remove `nginx['ssl_certificate']` and `nginx['ssl_certificate_key']` parameters.
 
 ## Container Network
 
